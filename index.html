@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Harmonic Space</title>
+    <meta name="description" content="Explore music theory in 3D — walk through a Tonnetz of notes and chords." />
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <aside id="panel">
+      <header>
+        <h1>Harmonic Space</h1>
+        <button id="togglePanel" class="ghost" aria-label="Toggle panel">–</button>
+      </header>
+      <div class="panel-body">
+        <p class="intro">
+          Every dot is a note. Each <b>triangle is a chord</b>: ▲ major, ▼ minor.
+          Neighbouring triangles share two notes, so stepping between them is the smoothest chord change there is.
+          Roll the plane up and the map closes into a <b>torus</b>: the circle of fifths runs around the long way.
+        </p>
+
+        <section>
+          <h2>Shape</h2>
+          <div class="row">
+            <button id="toPlane">Plane</button>
+            <input id="morph" type="range" min="0" max="1" step="0.001" value="0" />
+            <button id="toTorus">Torus</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Scale</h2>
+          <div class="row">
+            <select id="scaleRoot"></select>
+            <select id="scaleType"></select>
+            <button id="playScale" title="Play scale">▶</button>
+          </div>
+        </section>
+
+        <section>
+          <h2>Progression</h2>
+          <div class="row">
+            <select id="progSelect"></select>
+            <button id="progPlay">▶ Play</button>
+          </div>
+          <div class="row small">
+            <label>Tempo <input id="tempo" type="range" min="50" max="160" value="88" /></label>
+            <span id="tempoVal">88</span>
+          </div>
+          <div id="progChips" class="chips"></div>
+          <p id="progNote" class="note"></p>
+        </section>
+
+        <section>
+          <h2>Walk</h2>
+          <div class="row small">
+            <label><input id="follow" type="checkbox" /> Camera follows</label>
+            <label><input id="mute" type="checkbox" /> Mute</label>
+            <button id="clearWalk">Clear trail</button>
+          </div>
+        </section>
+
+        <section class="legend">
+          <div><i class="ln fifth"></i>perfect fifth (+7)</div>
+          <div><i class="ln maj3"></i>major third (+4)</div>
+          <div><i class="ln min3"></i>minor third (+3)</div>
+          <div><i class="tri major"></i>major triad <i class="tri minor"></i>minor triad</div>
+          <p class="keys">Keys: <kbd>P</kbd> <kbd>L</kbd> <kbd>R</kbd> move · <kbd>T</kbd> shape · <kbd>Space</kbd> play · <kbd>C</kbd> clear</p>
+        </section>
+      </div>
+    </aside>
+
+    <div id="hud">
+      <div class="current">
+        <div id="chordName">—</div>
+        <div id="chordNotes">Click a triangle to start walking</div>
+      </div>
+      <div class="moves">
+        <button data-move="P"><b>P</b><span class="to">·</span></button>
+        <button data-move="L"><b>L</b><span class="to">·</span></button>
+        <button data-move="R"><b>R</b><span class="to">·</span></button>
+      </div>
+    </div>
+
+    <div id="tooltip"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

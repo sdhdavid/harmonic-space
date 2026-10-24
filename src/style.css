@@ -1,0 +1,155 @@
+:root {
+  --bg: #07070d;
+  --panel: rgba(16, 16, 28, 0.78);
+  --border: rgba(255, 255, 255, 0.09);
+  --text: #e8e8f2;
+  --muted: #9a9ab4;
+  --accent: #ffb36b;
+  --fifth: #f2c46d;
+  --maj3: #5fd4c4;
+  --min3: #c78bff;
+  --major: #ffa94d;
+  --minor: #6ea8ff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+#app, #app canvas { position: fixed; inset: 0; }
+.labels { position: fixed; inset: 0; pointer-events: none; }
+
+.note-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-shadow: 0 0 6px #000, 0 0 2px #000;
+  user-select: none;
+}
+
+#panel {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 320px;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  padding: 14px 16px;
+}
+#panel header { display: flex; align-items: center; justify-content: space-between; }
+#panel h1 { margin: 0; font-size: 18px; letter-spacing: 0.02em; }
+#panel h2 {
+  margin: 0 0 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+#panel section { margin-top: 14px; }
+#panel.collapsed .panel-body { display: none; }
+.intro { color: var(--muted); margin: 10px 0 0; }
+.intro b { color: var(--text); font-weight: 600; }
+
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.row.small { margin-top: 8px; font-size: 13px; color: var(--muted); }
+.row input[type='range'] { flex: 1; min-width: 80px; accent-color: var(--accent); }
+.row select { flex: 1; min-width: 0; }
+
+button, select {
+  font: inherit;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+button:hover, select:hover { background: rgba(255, 255, 255, 0.12); }
+button:disabled { opacity: 0.35; cursor: default; }
+button.ghost { background: none; border: none; font-size: 18px; padding: 0 6px; }
+select option { background: #15151f; }
+label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.chip.major { border-color: color-mix(in srgb, var(--major) 40%, transparent); }
+.chip.minor { border-color: color-mix(in srgb, var(--minor) 40%, transparent); }
+.chip.active { color: #000; background: var(--accent); border-color: var(--accent); }
+.note { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+
+.legend { font-size: 12px; color: var(--muted); display: grid; gap: 4px; }
+.legend div { display: flex; align-items: center; gap: 8px; }
+.ln { display: inline-block; width: 22px; height: 2px; }
+.ln.fifth { background: var(--fifth); }
+.ln.maj3 { background: var(--maj3); }
+.ln.min3 { background: var(--min3); }
+.tri { display: inline-block; width: 12px; height: 12px; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.tri.major { background: var(--major); }
+.tri.minor { background: var(--minor); transform: rotate(180deg); }
+.keys { margin: 6px 0 0; }
+kbd {
+  font: 11px ui-monospace, monospace;
+  padding: 1px 5px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+}
+
+#hud {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  padding: 10px 16px;
+  max-width: calc(100% - 32px);
+}
+#hud .current { min-width: 120px; }
+#chordName { font-size: 24px; font-weight: 700; }
+#chordNotes { font-size: 12px; color: var(--muted); }
+#hud .moves { display: flex; gap: 6px; }
+#hud .moves button { display: flex; flex-direction: column; align-items: center; min-width: 54px; padding: 4px 10px; }
+#hud .moves b { font-size: 16px; color: var(--accent); }
+#hud .moves .to { font-size: 12px; color: var(--muted); }
+
+#tooltip {
+  position: fixed;
+  pointer-events: none;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.12s;
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  #panel { left: 16px; right: 16px; width: auto; top: 12px; max-height: 55%; }
+  #hud { bottom: 12px; gap: 10px; padding: 8px 12px; }
+  #chordName { font-size: 20px; }
+  #hud .current { min-width: 80px; }
+}
